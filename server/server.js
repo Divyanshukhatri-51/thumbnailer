@@ -11,6 +11,7 @@ import userRouter from "./routes/userRoutes.js";
 
 await connectDB();
 const app = express();
+const server = http.createServer(app);
 
 // Middleware
 app.use(cors({
@@ -44,6 +45,10 @@ app.use('/api/thumbnail', thumbnailRouter);
 app.use("/api/user", userRouter);
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-});
+if(process.env.NODE_ENV !== "production"){
+server.listen(PORT, () => {
+    console.log("server is running on port: ", PORT);
+})
+}
+//export server for vercel
+export default server;
